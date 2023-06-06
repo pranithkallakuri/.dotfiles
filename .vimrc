@@ -1,3 +1,98 @@
+" Basic Stuff
+set nocompatible
+set laststatus=2
+set nowrap
+
+" Testing: set Vim-specific sequences for RGB colors
+"let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum" " Screen doesnt like termguicolors
+"let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+"let &t_ZH="\e[3m"  " Screen doesnt like italics
+"let &t_ZR="\e[23m"
+"set termguicolors "This is the culprit in screen
+
+
+" Color Theme
+set t_Co=256
+" clear t_ut to Use colorscheme's background
+set t_ut=
+set background=dark
+"colorscheme sublime256
+"colorscheme codedark
+let g:gruvbox_italics=0
+colorscheme gruvbox8_hard
+"colorscheme lettuce
+
+
+
+" CursorLine
+set cursorline
+"set culopt=screenline ""https://www.ditig.com/256-colors-cheat-sheet
+"hi CursorLine cterm=NONE ctermul=NONE ctermbg=235 ctermfg=NONE
+if v:version <= 700
+  echo "Vim version is <= 700"
+  finish
+endif
+"
+" =====  PLUGINS =======
+"
+" =====  Lightline  =====
+"let g:lightline = {
+"      \ 'component_function': {
+"      \   'filename': 'LightlineFilename'
+"      \ }
+"      \ }
+function! LightlineFilename()
+  return expand('%')
+endfunction
+function! ProjectLocFunc()
+    return pathshorten(fnamemodify(getcwd(), ":~:."))
+endfunction
+
+try
+  let g:lightline = {
+        \ 'colorscheme': 'gruvbox8',
+        \ 'active': {
+        \     'right': [ [ 'lineinfo' ],
+        \                [ 'percent' ],
+        \                [ 'fileformat', 'fileencoding', 'filetype', 'ProjectLocation' ] ]
+        \ },
+        \ 'component' : {
+        \     'lineinfo': '%3l:%-2v%<',
+        \ },
+        \ 'component_function': {
+        \   'ProjectLocation': 'ProjectLocFunc',
+        \   'filename' : 'LightlineFilename',
+        \ },
+        \ }
+catch
+endtry
+
+" =====  CtrlP  =====
+"let g:ctrlp_custom_ignore = '.*\.(git|o|so|cmd)'
+set wildignore+=*.so,*.o,*.swp,*.cmd
+try
+  let g:ctrlp_working_path_mode = ''
+  let g:ctrlp_max_files = 0
+  let g:ctrlp_clear_cache_on_exit = 0 "Uncomment this once your done tinkering with ctrlp
+catch
+endtry
+
+" =====  vim-gitgutter  ========
+try
+  highlight GitGutterAdd    guifg=#009900 ctermfg=2
+  highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+  highlight GitGutterDelete guifg=#ff2222 ctermfg=1
+catch
+endtry
+
+set noswapfile "May not be a good idea; But dont want swp files being created every 100ms too
+set updatetime=100
+
+" =====  Indentation  ======
+set autoindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 
 " ======  cscope  ======
