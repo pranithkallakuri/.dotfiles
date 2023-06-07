@@ -20,7 +20,7 @@ startup_message off
 term screen-256color
 
 # Cache 30000 lines for scroll back
-defscrollback 10000
+defscrollback 30000
 
 shelltitle '$ |bash'
 
